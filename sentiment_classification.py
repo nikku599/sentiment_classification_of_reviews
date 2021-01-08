@@ -1,3 +1,4 @@
+
 #importing the main libraries
 import numpy as np
 import pandas as pd
@@ -6,6 +7,7 @@ import matplotlib.pyplot as plt
 #importing the data
 df=pd.read_csv("Restaurant_Reviews.csv")
 df.head()
+
 
 #cleaning the data and redundancy
 
@@ -51,6 +53,16 @@ Y=df.iloc[:,1].values
 from sklearn.model_selection import train_test_split
 xtrain,xtest,ytrain,ytest=train_test_split(X,Y, test_size=0.25,random_state=42)
 
+#understanding the test case
+print(len(xtest))
+print(len(ytest))
+
+count=0
+for i in ytest:
+    if i==1:
+        count+=1
+print(count)
+
 #implementing the NaiveBayes model
 from sklearn.naive_bayes import GaussianNB
 model_nb=GaussianNB()
@@ -62,14 +74,20 @@ from sklearn.metrics import accuracy_score
 print(accuracy_score(ytest,ypred_nb))
 
 
+from sklearn.metrics import confusion_matrix
+print(confusion_matrix(ytest, ypred_nb))
+
+
 #implementing the decision tree model
 from sklearn.tree import DecisionTreeClassifier
-model_dt=DecisionTreeClassifier()    
+model_dt=DecisionTreeClassifier(criterion="gini",random_state=42)    
 model_dt.fit(xtrain,ytrain)    
 ypred_dt=model_dt.predict(xtest)
 
 #checking the accuracy score of decision tree
 print(accuracy_score(ytest,ypred_dt))
+print(confusion_matrix(ytest, ypred_dt))
+
 
 
 #implementing knn
@@ -79,6 +97,7 @@ model_knn.fit(xtrain,ytrain)
 ypred_knn=model_knn.predict(xtest)
 
 print(accuracy_score(ytest, ypred_knn))
+print(confusion_matrix(ytest, ypred_knn))
 
 #implementing the logisticRegression
 from sklearn.linear_model import LogisticRegression
@@ -90,8 +109,8 @@ ypred_lr=model_lr.predict(xtest)
 from sklearn.metrics import accuracy_score
 print(accuracy_score(ytest,ypred_lr))
 
-
-
+from sklearn.metrics import confusion_matrix
+print(confusion_matrix(ytest, ypred_lr))
 
 
 
